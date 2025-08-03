@@ -29,16 +29,13 @@ function playMusic() {
   // Auto play after first interaction
   function allowAutoPlay() {
     playMusic();
-    // Remove listeners after first interaction
-    document.removeEventListener("click", allowAutoPlay);
-    document.removeEventListener("touchstart", allowAutoPlay);
-    document.removeEventListener("keydown", allowAutoPlay);
   }
 
-  // Wait for first user interaction
-  document.addEventListener("click", allowAutoPlay);
-  document.addEventListener("touchstart", allowAutoPlay);
-  document.addEventListener("keydown", allowAutoPlay);
+// Wait for first user interaction (scroll OR click OR touch)
+document.addEventListener("scroll", allowAutoPlay, { once: true });
+document.addEventListener("click", allowAutoPlay, { once: true });
+document.addEventListener("touchstart", allowAutoPlay, { once: true });
+document.addEventListener("keydown", allowAutoPlay, { once: true });
 
 // Confetti
 const confettiContainer = document.getElementById("confetti-container");
