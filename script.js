@@ -45,21 +45,26 @@ function updateCountdown() {
     const now = new Date();
     const currentYear = now.getFullYear();
 
+    // Determine the correct year for next birthday
     let birthdayYear = currentYear;
     if (now.getMonth() > 6 || (now.getMonth() === 6 && now.getDate() > 26)) {
         birthdayYear += 1;
     }
 
-    // Force both dates to midnight to avoid partial day issues
-    const nowMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const nextBirthday = new Date(birthdayYear, 6, 26); // July 26
+    const nextBirthday = new Date(birthdayYear, 6, 26, 0, 0, 0); // July is 6 (0-indexed)
+    const diff = nextBirthday - now; // Keep 'now' with time so timer ticks live
 
-    const diff = nextBirthday - nowMidnight;
+    if (diff <= 0) {
+        document.getElementById('countdown').textContent = "🎉 Happy Birthday May Myat Noe!";
+        return;
+    }
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const totalSeconds = Math.floor(diff / 1000);
+
+    const days = Math.floor(totalSeconds / (60 * 60 * 24));
+    const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+    const seconds = totalSeconds % 60;
 
     document.getElementById('days').textContent = days.toString().padStart(2, '0');
     document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
@@ -67,9 +72,10 @@ function updateCountdown() {
     document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
 }
 
-
+// Run every second
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
         
 
 // Slideshow Logic
