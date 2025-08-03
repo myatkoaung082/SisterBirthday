@@ -22,9 +22,23 @@
         }
 
 function playMusic() {
-  const music = document.getElementById("birthday-music");
-  music.play();
-}
+    const music = document.getElementById("birthday-music");
+    music.play().catch(err => console.warn("Autoplay failed:", err));
+  }
+
+  // Auto play after first interaction
+  function allowAutoPlay() {
+    playMusic();
+    // Remove listeners after first interaction
+    document.removeEventListener("click", allowAutoPlay);
+    document.removeEventListener("touchstart", allowAutoPlay);
+    document.removeEventListener("keydown", allowAutoPlay);
+  }
+
+  // Wait for first user interaction
+  document.addEventListener("click", allowAutoPlay);
+  document.addEventListener("touchstart", allowAutoPlay);
+  document.addEventListener("keydown", allowAutoPlay);
 
 // Confetti
 const confettiContainer = document.getElementById("confetti-container");
